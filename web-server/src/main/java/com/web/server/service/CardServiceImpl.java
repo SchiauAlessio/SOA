@@ -21,4 +21,10 @@ public class CardServiceImpl implements CardService {
     public List<Card> findAll() {
         return this.cardRepository.findAll();
     }
+
+    @Override
+    public Card save(Card card) {
+
+        return this.cardRepository.save(card);
+    }
 }

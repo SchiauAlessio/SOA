@@ -5,11 +5,9 @@ import com.web.server.service.CardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,11 @@ public class CardController {
     public List<Card> findAll() {
         logger.info("Request to get all cards");
         return this.cardService.findAll();
+    }
+
+    @PostMapping("/card/save")
+    public ResponseEntity<Card> save(@RequestBody Card card) {
+        logger.info("Request to save card: {}", card);
+        return ResponseEntity.ok(this.cardService.save(card));
     }
 }

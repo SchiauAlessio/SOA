@@ -1,0 +1,95 @@
+version: '3'
+services:
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - software_system_server
+    networks:
+      - system-network
+
+  system-db:
+    container_name: software_system-db_1
+    image: postgres:16.1
+    environment:
+      POSTGRES_DB: system_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 5432:5432
+    networks:
+      - system-network
+
+  hivemq:
+    image: 127.0.0.1:5000/hivemq
+    build: ./HiveMQ
+    container_name: hivemq
+    ports:
+      - 1883:1883
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+    networks:
+      - system-network
+
+  software_system_backend:
+    depends_on:
+      - system-db
+      - hivemq
+      - software_system_server
+    build: ./software_system_backend
+    restart: on-failure
+    container_name: software_system_backend-app
+    environment:
+      POSTGRESQL_URI: jdbc:postgresql://system-db:5432/system_database
+      HIVEMQ_URI: hivemq
+    ports:
+      - 8081:8081
+    links:
+      - system-db
+      - hivemq
+      - software_system_server
+    networks:
+      - system-network
+
+  software_system_server:
+    depends_on:
+      - system-db
+      - hivemq
+    build: ./software_system_server
+    restart: on-failure
+    container_name: software_system_server-app
+    environment:
+      POSTGRESQL_URI: jdbc:postgresql://system-db:5432/system_database
+      HIVEMQ_URI: hivemq
+    ports:
+      - 8082:8082
+    links:
+      - system-db
+      - hivemq
+    networks:
+      - system-network
+
+  software-system-frontend:
+    depends_on:
+      - software_system_backend
+      - software_system_server
+    build: ./software-system-frontend
+    container_name: software-system-frontend
+    ports:
+      - 4200:4200
+    links:
+      - software_system_backend
+      - software_system_server
+    networks:
+      - system-network
+
+networks:
+  system-network:
+    driver: bridge
