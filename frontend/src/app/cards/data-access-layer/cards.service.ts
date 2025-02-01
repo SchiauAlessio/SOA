@@ -25,4 +25,13 @@ export class CardsService {
     };
     return this.http.get(url, options);
   }
+
+  send(message: any): Observable<any> {
+    const url = 'http://localhost:8082/api/message/send';
+    const headers = this.getAuthHeader('user', 'password');
+    const options = {
+      headers: headers,
+    };
+    return this.http.post(url, message, options);
+  }
 }

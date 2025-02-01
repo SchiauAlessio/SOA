@@ -1,5 +1,8 @@
 <div class="active-page">
 
+  <textarea class="content-input" [(ngModel)]="content" placeholder="Content"></textarea>
+  <button class="add-button" (click)="addCard()">Add</button>
+
   <div id="space-outer" class="space-section" *ngFor="let card of cards">
     <div class="content">
       <div class="text-container">

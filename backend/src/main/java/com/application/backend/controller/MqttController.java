@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/message")
 public class MqttController {
@@ -16,11 +19,14 @@ public class MqttController {
     private MqttPublisherService mqttPublisherService;
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendMessage(@RequestBody String message) {
+    public ResponseEntity<Map<String, String>> sendMessage(@RequestBody String message) {
         System.out.println("Successfully received!");
         mqttPublisherService.publishMessage(message);
-        String receivedMessage = "Successfully received!";
-        return ResponseEntity.ok(receivedMessage);
 
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Successfully received!");
+
+        return ResponseEntity.ok(response);
     }
 }
