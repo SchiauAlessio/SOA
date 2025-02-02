@@ -18,7 +18,7 @@ export class CardsService {
   }
 
   findAll(): Observable<any> {
-    const url = 'http://localhost:8081/api/soa/cards';
+    const url = 'http://localhost/api/soa/cards';
     const headers = this.getAuthHeader('user', 'password');
     const options = {
       headers: headers,
