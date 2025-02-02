@@ -25,3 +25,6 @@ replay_pid*
 
 /.idea/
 node_modules/
+
+
+nginx-1.27.3
