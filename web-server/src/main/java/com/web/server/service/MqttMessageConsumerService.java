@@ -18,6 +18,9 @@ public class MqttMessageConsumerService {
     @Autowired
     private CardService cardService;
 
+    @Autowired
+    private WebSocketNotificationService notificationService;
+
     @PostConstruct
     public void subscribeToTopic() {
         Mqtt5AsyncClient client = MqttClient.builder()
@@ -63,6 +66,7 @@ public class MqttMessageConsumerService {
                                 card.setTitle("MQTT Message");
                                 cardService.save(card);
                                 System.out.println("Received message: " + message);
+                                notificationService.sendCardSavedNotification(card);
                             } catch (Exception e) {
                                 System.out.println("Failed to process message: " + e.getMessage());
                             }

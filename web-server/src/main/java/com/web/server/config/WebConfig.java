@@ -18,6 +18,9 @@ public class WebConfig implements WebMvcConfigurer {
                 registry.addMapping("/api/soa/**")
                         .allowedOrigins("http://localhost:4200", "http://localhost:8080")
                         .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS", "PATCH");
+
+                registry.addMapping("/ws/**")
+                        .allowedOrigins("http://localhost:4200");
             }
         };
     }
