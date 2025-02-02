@@ -22,6 +22,7 @@ export class CardsComponent {
   content: string | undefined;
 
   private subscription: Subscription | undefined;
+  private kafkaSubscription: Subscription | undefined;
 
   constructor(private cardsService: CardsService, private webSocketService: WebSocketService) {
   }
@@ -29,6 +30,7 @@ export class CardsComponent {
   ngOnInit() {
     this.getAllCards();
     this.webSocketService.connect();
+    this.webSocketService.connectToKafka();
 
     this.subscription = this.webSocketService.card$.subscribe(card => {
       if (card) {
@@ -36,6 +38,13 @@ export class CardsComponent {
           console.log(card);
           this.cards.unshift(card);
         }
+      }
+    });
+
+    this.kafkaSubscription = this.webSocketService.kafkaMessage$.subscribe(message => {
+      if (message) {
+        console.log(message);
+        alert(message.message);
       }
     });
   }
