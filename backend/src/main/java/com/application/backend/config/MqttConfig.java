@@ -17,7 +17,7 @@ public class MqttConfig {
         Mqtt5AsyncClient client = MqttClient.builder()
                 .useMqttVersion5()
                 .identifier(UUID.randomUUID().toString())
-                .serverHost("broker.hivemq.com") // "broker.hivemq.com"
+                .serverHost("broker.hivemq.com")
                 .serverPort(1883)
                 .addConnectedListener(new MqttClientConnectedListener() {
                     @Override
