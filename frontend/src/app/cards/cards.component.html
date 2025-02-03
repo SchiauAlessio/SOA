@@ -6,7 +6,7 @@
   <br>
   <br>
 
-  <div id="space-outer" class="space-section" *ngFor="let card of cards">
+  <div id="space-outer" class="space-section" [ngClass]="{'winner': card.id === winner}" *ngFor="let card of cards">
     <div class="content">
       <div class="text-container">
         <h2>{{card.title}}</h2>

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {CardsService} from "./data-access-layer/cards.service";
 import {FormsModule} from "@angular/forms";
 import {WebSocketService} from "../../web-socket-service";
@@ -10,7 +10,8 @@ import {Subscription} from "rxjs";
   standalone: true,
   imports: [
     NgForOf,
-    FormsModule
+    FormsModule,
+    NgClass
   ],
   templateUrl: './cards.component.html',
   styleUrl: './cards.component.css'
@@ -20,6 +21,8 @@ export class CardsComponent {
   cards: any[] | undefined;
 
   content: string | undefined;
+
+  winner: number | null = null;
 
   private subscription: Subscription | undefined;
   private kafkaSubscription: Subscription | undefined;
@@ -43,8 +46,14 @@ export class CardsComponent {
 
     this.kafkaSubscription = this.webSocketService.kafkaMessage$.subscribe(message => {
       if (message) {
-        console.log(message);
+        console.log("message is ", message);
         alert(message.message);
+
+        const match = message.message.match(/\d+/);
+        const winnerNumber = match ? parseInt(match[0], 10) : null;
+
+        console.log("Extracted winner number: ", winnerNumber);
+        this.winner = winnerNumber;
       }
     });
   }
