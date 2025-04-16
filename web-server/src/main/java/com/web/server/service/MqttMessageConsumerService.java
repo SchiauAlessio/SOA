@@ -25,7 +25,7 @@ public class MqttMessageConsumerService {
         Mqtt5AsyncClient client = MqttClient.builder()
                 .useMqttVersion5()
                 .identifier("consumer-id")
-                .serverHost("broker.hivemq.com") // "broker.hivemq.com"
+                .serverHost("broker.hivemq.com")
                 .serverPort(1883) // Default MQTT port
                 .automaticReconnectWithDefaultConfig() // Enable automatic reconnect
                 .buildAsync();

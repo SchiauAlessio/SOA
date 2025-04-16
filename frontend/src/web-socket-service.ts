@@ -19,7 +19,7 @@ export class WebSocketService {
   constructor(private cardsService: CardsService,) {
 
     this.stompClient = new Client({
-      brokerURL: 'ws://localhost:8081/ws',
+      brokerURL: 'ws://localhost:8091/ws',
       connectHeaders: {},
       debug: function (str) {
         console.log(str);
@@ -39,7 +39,7 @@ export class WebSocketService {
 
     console.log('Creating Kafka WebSocket client');
     this.kafkaStompClient = new Client({
-      brokerURL: 'ws://localhost:8083/ws',
+      brokerURL: 'ws://localhost:8093/ws',
       connectHeaders: {},
       debug: function (str) {
         console.log(str);
